@@ -1,20 +1,20 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <vmusic-carousel></vmusic-carousel>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import VmusicCarousel from '../components/VmusicCarousel'
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    VmusicCarousel
   }
 }
 </script>
 
-<style >
+<style lang="scss" scoped>
+
 </style>

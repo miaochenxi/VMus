@@ -15,8 +15,8 @@ body {
   background: black;
 }
 #app {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  font-size: 20px;
+  font-family: Roboto, sans-serif;
+  font-size: 1.25rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
