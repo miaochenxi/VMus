@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 gap-4 items-center relative" id="nav">
+  <div class="grid grid-cols-3 gap-4 items-center relative z-20" id="nav">
     <div class="inline-flex col-start-1">
       <img class="h-8 inline" alt="Vue logo" src="../assets/logo.png" />
       <span class="text-2xl">VMusic</span>
@@ -17,7 +17,7 @@
       id="userpic"
       @click="userClick"
       alt="User Pic"
-      class="w-9 col-end-4 justify-self-end cursor-pointer rounded-full"
+      class="w-8 col-end-4 justify-self-end cursor-pointer rounded-full"
       :src="userProfile.url"
     />
     <extend-menu v-if="showMenu.show"></extend-menu>
@@ -29,7 +29,7 @@ import { onMounted, provide, reactive, readonly } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import ExtendMenu from './ExtendMenu.vue'
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://10.85.16.30:3000'
 export default {
   components: { ExtendMenu },
   name: 'NavigationBar',
@@ -78,8 +78,8 @@ export default {
 
 <style lang="scss" scoped>
 #nav {
-  font-size: 1.25rem;
-  padding: 8px;
+  font-size: 1.4rem;
+  padding: 16px;
   a {
     color: #ffffff80;
     margin: 0 24px 0;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <navigation-bar></navigation-bar>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 <script>
@@ -21,5 +21,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #181818;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #717171;
 }
 </style>

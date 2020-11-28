@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <vmusic-carousel></vmusic-carousel>
+    <wallpaper></wallpaper>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import VmusicCarousel from '../components/VmusicCarousel'
+import Wallpaper from '../components/Wallpaper.vue'
 export default {
   name: 'Home',
   components: {
-    VmusicCarousel
+    Wallpaper
   }
 }
 </script>
