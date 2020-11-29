@@ -29,7 +29,7 @@ import { onMounted, provide, reactive, readonly } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import ExtendMenu from './ExtendMenu.vue'
-axios.defaults.baseURL = 'http://10.85.16.30:3000'
+axios.defaults.baseURL = 'http://localhost:3000'
 export default {
   components: { ExtendMenu },
   name: 'NavigationBar',
