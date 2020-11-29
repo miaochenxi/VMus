@@ -4,10 +4,14 @@
       <span class="block">欢庆永远不嫌早</span>
       <h1 class="text-4xl font-bold">推荐的音乐视频</h1>
     </div>
-    <div v-if="rendAlbum.rend" class="space-x-7 overflow-hidden whitespace-nowrap">
-      <!-- components -->
+    <div v-if="rendAlbum.rend" class="carousel space-x-7 overflow-x-auto whitespace-nowrap">
       <album-item v-for="i in 10" :key="i" :item="i"></album-item>
     </div>
+    <button
+      @click="scrollright"
+      id="btn-right"
+      class="absolute -right-5 bottom-44 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+    ></button>
   </div>
 </template>
 
@@ -21,6 +25,9 @@ export default {
   setup () {
     const Albums = reactive([])
     const rendAlbum = reactive({ rend: false })
+    const carousel = reactive({
+      width: ''
+    })
     onMounted(() => {
       Axios.get('http://10.85.16.30:3000/personalized?limit=10')
         .then(res => {
@@ -31,8 +38,12 @@ export default {
         })
         .catch(err => console.error(err))
     })
+    function scrollright () {
+      const width = document.getElementById('VmusicCarousel').offsetWidth
+      console.log(width)
+    }
     provide('Albums', Albums)
-    return { rendAlbum }
+    return { rendAlbum, scrollright, carousel }
   }
 }
 </script>
@@ -41,5 +52,14 @@ export default {
 span {
   font-size: 1.1rem;
   color: #ffffff80;
+}
+#btn-right {
+  background-image: url('../assets/images/right.svg');
+  background-size: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
 }
 </style>
