@@ -1,23 +1,36 @@
 <template>
-  <div>
-    <img :src="Album.picurl" />
-    <div>
-      <a>{{Album.name}}</a>
+  <div class="inline-block">
+    <img class="w-52 rounded-md" :src="Album.picurl" />
+    <div class="mt-4">
+      <a href="#">{{Album.name}}</a>
       <span>{{Album.description}}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { inject, onMounted, reactive } from 'vue'
 export default {
-  setup () {
+  props: {
+    item: {
+      type: Number,
+      required: true
+    }
+  },
+  setup (props) {
+    const Albums = inject('Albums')
     const Album = reactive({
+      id: 0,
       name: '',
       picurl: '',
       description: ''
     })
-    return Album
+    onMounted(() => {
+      Album.name = Albums[props.item - 1].name
+      Album.id = Albums[props.item - 1].id
+      Album.picurl = Albums[props.item - 1].picurl
+    })
+    return { Album }
   }
 }
 </script>
@@ -25,5 +38,13 @@ export default {
 <style lang="scss" scoped>
 span {
   color: #ffffff80;
+}
+a {
+  display: block;
+  white-space: normal;
+  line-height: 1.5rem;
+  text-align: left;
+  font-size: 1.1rem;
+  width: 13rem;
 }
 </style>
