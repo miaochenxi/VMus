@@ -4,6 +4,12 @@
       <span class="block">欢庆永远不嫌早</span>
       <h1 class="text-4xl font-bold">推荐的音乐视频</h1>
     </div>
+    <button
+      v-if="scrollbar.scrollleft"
+      @click="scrollleft"
+      id="btn-left"
+      class="absolute -left-5 bottom-44 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+    ></button>
     <div
       id="VmusicCarousel"
       ref="carousel"
@@ -13,6 +19,7 @@
       <album-item v-for="i in 10" :key="i" :item="i"></album-item>
     </div>
     <button
+      v-if="scrollbar.scrollright"
       @click="scrollright"
       id="btn-right"
       class="absolute -right-5 bottom-44 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
@@ -34,7 +41,13 @@ export default {
     const Albums = reactive([])
     const rendAlbum = reactive({ rend: false })
     const carousel = ref(null)
-    const width = reactive({ value: 0, trig: true })
+    const scrollbar = reactive({
+      value: 0,
+      width: 0,
+      trig: true,
+      scrollleft: false,
+      scrollright: true
+    })
     onMounted(() => {
       Axios.get('http://localhost:3000/personalized?limit=10')
         .then(res => {
@@ -46,22 +59,42 @@ export default {
         .catch(err => console.error(err))
     })
     function scrollright () {
-      if (width.trig) {
-        width.value = carousel.value.offsetWidth
-        width.trig = false
-      }
-      if (carousel.value.scrollWidth <= width.value) {
+      if (scrollbar.trig && !scrollbar.scrollleft) {
+        scrollbar.value = carousel.value.offsetWidth
+        scrollbar.width = scrollbar.value
+        scrollbar.trig = false
+      }// 初次设置为可见区域宽度
+      scrollbar.scrollleft = true
+      if (carousel.value.scrollWidth <= scrollbar.value) {
+        scrollbar.scrollright = false
         return
       }
-      if (carousel.value.scrollWidth - width.value < width.value) {
-        gsap.to(carousel.value, { duration: 1.5, scrollTo: { x: carousel.value.scrollWidth }, ease: 'power3.inOut' })
+      console.log(carousel.value.scrollWidth)
+      console.log(scrollbar.value)
+      if (carousel.value.scrollWidth - scrollbar.value < scrollbar.width) {
+        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: carousel.value.scrollWidth - scrollbar.width }, ease: 'power2.inOut' })
         return
       }
-      gsap.to(carousel.value, { duration: 1.5, scrollTo: { x: width.value }, ease: 'power3.inOut' })
-      width.value += width.value
+      gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
+      scrollbar.value += scrollbar.width
+    }
+
+    function scrollleft () {
+      scrollbar.scrollright = true
+      if (scrollbar.value < scrollbar.width) {
+        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: 0 }, ease: 'power2.inOut' })
+        return
+      }
+      gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
+      scrollbar.value -= scrollbar.width
+      console.log(scrollbar.value)
+      if (scrollbar.value === 0) {
+        scrollbar.scrollleft = false
+        scrollbar.trig = true
+      }
     }
     provide('Albums', Albums)
-    return { rendAlbum, scrollright, carousel }
+    return { rendAlbum, scrollright, carousel, scrollleft, scrollbar }
   }
 }
 </script>
@@ -73,6 +106,12 @@ span {
 }
 #btn-right {
   background-image: url('../assets/images/right.svg');
+  background-size: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#btn-left {
+  background-image: url('../assets/images/left.svg');
   background-size: 1.5rem;
   background-repeat: no-repeat;
   background-position: center;
