@@ -60,8 +60,7 @@ export default {
     })
     function scrollright () {
       if (scrollbar.trig && !scrollbar.scrollleft) {
-        scrollbar.value = carousel.value.offsetWidth
-        scrollbar.width = scrollbar.value
+        scrollbar.width = carousel.value.offsetWidth
         scrollbar.trig = false
       }// 初次设置为可见区域宽度
       scrollbar.scrollleft = true
@@ -72,26 +71,25 @@ export default {
       console.log(carousel.value.scrollWidth)
       console.log(scrollbar.value)
       if (carousel.value.scrollWidth - scrollbar.value < scrollbar.width) {
-        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: carousel.value.scrollWidth - scrollbar.width }, ease: 'power2.inOut' })
+        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: carousel.value.scrollWidth - scrollbar.value }, ease: 'power2.inOut' })
+        scrollbar.scrollright = false
         return
       }
-      gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
       scrollbar.value += scrollbar.width
+      gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
 
     function scrollleft () {
       scrollbar.scrollright = true
+      scrollbar.value -= scrollbar.width
       if (scrollbar.value < scrollbar.width) {
         gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: 0 }, ease: 'power2.inOut' })
+        scrollbar.scrollleft = false
+        scrollbar.trig = true
         return
       }
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
-      scrollbar.value -= scrollbar.width
       console.log(scrollbar.value)
-      if (scrollbar.value === 0) {
-        scrollbar.scrollleft = false
-        scrollbar.trig = true
-      }
     }
     provide('Albums', Albums)
     return { rendAlbum, scrollright, carousel, scrollleft, scrollbar }
