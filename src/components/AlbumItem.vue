@@ -7,7 +7,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { inject, onMounted, reactive } from 'vue'
 export default {
@@ -40,11 +39,13 @@ span {
   color: #ffffff80;
 }
 a {
+  width: 13rem;
+  height: 3rem;
   display: block;
+  overflow: hidden;
   white-space: normal;
   line-height: 1.5rem;
   text-align: left;
   font-size: 1.1rem;
-  width: 13rem;
 }
 </style>

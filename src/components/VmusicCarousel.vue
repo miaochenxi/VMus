@@ -43,8 +43,6 @@ export default {
     const carousel = ref(null)
     const scrollbar = reactive({
       value: 0,
-      width: 0,
-      trig: true,
       scrollleft: false,
       scrollright: true
     })
@@ -59,40 +57,33 @@ export default {
         .catch(err => console.error(err))
     })
     function scrollright () {
-      if (scrollbar.trig && !scrollbar.scrollleft) {
-        scrollbar.width = carousel.value.offsetWidth
-        scrollbar.trig = false
-      }// 初次设置为可见区域宽度
-      scrollbar.scrollleft = true
-      if (carousel.value.scrollWidth <= scrollbar.value) {
+      if (!scrollbar.scrollleft) {
+        scrollbar.value = 0
+        scrollbar.scrollleft = true
+      }// 最左边时执行
+      if (carousel.value.scrollWidth - scrollbar.value <= 2 * carousel.value.offsetWidth) {
+        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: carousel.value.scrollWidth - carousel.value.offsetWidth }, ease: 'power2.inOut' })
         scrollbar.scrollright = false
         return
       }
-      console.log(carousel.value.scrollWidth)
-      console.log(scrollbar.value)
-      if (carousel.value.scrollWidth - scrollbar.value < scrollbar.width) {
-        gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: carousel.value.scrollWidth - scrollbar.value }, ease: 'power2.inOut' })
-        scrollbar.scrollright = false
-        return
-      }
-      scrollbar.value += scrollbar.width
+      scrollbar.value += carousel.value.offsetWidth
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
 
     function scrollleft () {
-      scrollbar.scrollright = true
-      scrollbar.value -= scrollbar.width
-      if (scrollbar.value < scrollbar.width) {
+      if (!scrollbar.scrollright) {
+        scrollbar.scrollright = true
+      }// 最右边时执行
+      if (scrollbar.value <= carousel.value.offsetWidth) {
         gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: 0 }, ease: 'power2.inOut' })
         scrollbar.scrollleft = false
-        scrollbar.trig = true
         return
       }
+      scrollbar.value -= carousel.value.offsetWidth
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
-      console.log(scrollbar.value)
     }
     provide('Albums', Albums)
-    return { rendAlbum, scrollright, carousel, scrollleft, scrollbar }
+    return { rendAlbum, scrollright, scrollleft, scrollbar }
   }
 }
 </script>
