@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vmusic-carousel class="z-20 relative"></vmusic-carousel>
+    <vmusic-carousel class="z-20 relative" :reqUrl="requestAPI"></vmusic-carousel>
     <div class="cover absolute top-0 h-4/6 w-full z-10"></div>
     <div
       id="Wallpaper"
@@ -12,7 +12,8 @@
 
 <script>
 import Axios from 'axios'
-import { onMounted, reactive } from 'vue'
+import { config, wallpaperURL } from '../api'
+import { onBeforeMount, reactive } from 'vue'
 import VmusicCarousel from './VmusicCarousel.vue'
 export default {
   components: { VmusicCarousel },
@@ -21,16 +22,17 @@ export default {
     const picurl = reactive({
       url: ''
     })
-
-    onMounted(() => {
-      Axios.get('https://api.xygeng.cn/Bing/url')
+    const requestAPI = config.personalized
+    onBeforeMount(() => {
+      Axios.defaults.withCredentials = true
+      Axios.get(wallpaperURL)
         .then(res => {
           picurl.url = res.data.data
         })
         .catch(err => console.error(err))
     })
 
-    return { picurl }
+    return { picurl, requestAPI }
   }
 }
 </script>

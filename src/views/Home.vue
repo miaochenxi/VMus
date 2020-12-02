@@ -1,20 +1,26 @@
 <template>
   <div class="home">
     <wallpaper></wallpaper>
+    <vmusic-carousel :reqUrl="carouselApi"></vmusic-carousel>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import { config } from '../api'
+import VmusicCarousel from '../components/VmusicCarousel.vue'
 import Wallpaper from '../components/Wallpaper.vue'
 export default {
   name: 'Home',
   components: {
-    Wallpaper
+    Wallpaper,
+    VmusicCarousel
+  },
+  setup () {
+    const carouselApi = config.newsong
+    return { carouselApi }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
 </style>

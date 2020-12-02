@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { onMounted, provide, reactive, ref } from 'vue'
+import { onBeforeMount, provide, reactive, ref } from 'vue'
 import AlbumItem from './AlbumItem.vue'
 import Axios from 'axios'
 import { gsap } from 'gsap'
@@ -37,7 +37,15 @@ gsap.registerPlugin(ScrollToPlugin)
 export default {
   components: { AlbumItem },
   name: 'VmusicCarousel',
-  setup () {
+  props:
+  {
+    reqUrl:
+    {
+      type: String,
+      required: true
+    }
+  },
+  setup (props) {
     const Albums = reactive([])
     const rendAlbum = reactive({ rend: false })
     const carousel = ref(null)
@@ -46,8 +54,9 @@ export default {
       scrollleft: false,
       scrollright: true
     })
-    onMounted(() => {
-      Axios.get('http://localhost:3000/personalized?limit=10')
+    onBeforeMount(() => {
+      Axios.defaults.withCredentials = true
+      Axios.get(props.reqUrl)
         .then(res => {
           res.data.result.forEach(element => {
             Albums.push({ id: element.id, name: element.name, picurl: element.picUrl }) // 提取出result中每个集锦的id，name，picurl 添加到对象传入子组件F
@@ -83,7 +92,7 @@ export default {
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
     provide('Albums', Albums)
-    return { rendAlbum, scrollright, scrollleft, scrollbar }
+    return { rendAlbum, scrollright, scrollleft, scrollbar, carousel }
   }
 }
 </script>
