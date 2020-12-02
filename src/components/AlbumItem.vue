@@ -46,6 +46,6 @@ a {
   white-space: normal;
   line-height: 1.5rem;
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 </style>

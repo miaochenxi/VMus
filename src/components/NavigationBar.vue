@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import { onMounted, provide, reactive, readonly } from 'vue'
+import { onBeforeMount, provide, reactive, readonly } from 'vue'
 import { useStore } from 'vuex'
+import { netease, baseURL } from '../api/neteasemusic'
 import axios from 'axios'
 import ExtendMenu from './ExtendMenu.vue'
 axios.defaults.baseURL = 'http://localhost:3000'
@@ -44,10 +45,10 @@ export default {
 
     userProfile.url = require('../assets/images/user.svg')
 
-    onMounted(() => {
-      axios.get('/login/status').then(() => store.commit('updateLogStatus', true)).catch(() => store.commit('updateLogStatus', false))
+    onBeforeMount(async () => { // 异步方法，等先获取完登录状态才能判断是否需要登录
+      await axios.get(netease.loginstatus).then(() => store.commit('updateLogStatus', true)).catch(() => store.commit('updateLogStatus', false))
       if (!store.state.isLogged) {
-        axios.get('/login/cellphone?phone=18317559426&password=miao7456mmmm958.')
+        axios.get(baseURL + '/login/cellphone?phone=18317559426&password=miao7456mmmm958.')
           .then(result => {
             userProfile.url = result.data.profile.avatarUrl
             userProfile.nickname = result.data.profile.nickname
@@ -78,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 #nav {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   padding: 16px;
   a {
     color: #ffffff80;

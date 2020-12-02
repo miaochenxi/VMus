@@ -12,7 +12,8 @@
 
 <script>
 import Axios from 'axios'
-import { config, wallpaperURL } from '../api'
+import { netease } from '../api/neteasemusic'
+import { wallpaperURL } from '../api/others'
 import { onBeforeMount, reactive } from 'vue'
 import VmusicCarousel from './VmusicCarousel.vue'
 export default {
@@ -22,10 +23,12 @@ export default {
     const picurl = reactive({
       url: ''
     })
-    const requestAPI = config.personalized
+    const requestAPI = netease.personalized
     onBeforeMount(() => {
-      Axios.defaults.withCredentials = true
-      Axios.get(wallpaperURL)
+      Axios.get(wallpaperURL,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
         .then(res => {
           picurl.url = res.data.data
         })
