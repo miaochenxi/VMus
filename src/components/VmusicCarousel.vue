@@ -30,9 +30,11 @@
 <script>
 import { onBeforeMount, provide, reactive, ref } from 'vue'
 import AlbumItem from './AlbumItem.vue'
-import Axios from 'axios'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import Axios from 'axios'
+import { netease } from '../api/neteasemusic'
+import { getRandomTag } from '../common/Category'
 gsap.registerPlugin(ScrollToPlugin)
 export default {
   components: { AlbumItem },
@@ -42,11 +44,11 @@ export default {
     reqUrl:
     {
       type: String,
-      required: true
+      required: false
     }
   },
   setup (props) {
-    const Albums = reactive([])
+    const playlists = []
     const rendAlbum = reactive({ rend: false })
     const carousel = ref(null)
     const scrollbar = reactive({
@@ -54,17 +56,28 @@ export default {
       scrollleft: false,
       scrollright: true
     })
+
     onBeforeMount(() => {
       Axios.defaults.withCredentials = true
-      Axios.get(props.reqUrl)
-        .then(res => {
-          res.data.result.forEach(element => {
-            Albums.push({ id: element.id, name: element.name, picurl: element.picUrl }) // 提取出result中每个集锦的id，name，picurl 添加到对象传入子组件F
+      Axios.get(netease.playerlist, {
+        params: {
+          cat: getRandomTag(),
+          limit: 10
+        }
+      }).then(res => {
+        console.log(res)
+        res.data.playlists.forEach(element => {
+          playlists.push({
+            name: element.name,
+            id: element.id,
+            coverImgUrl: element.coverImgUrl,
+            copywriter: element.copywriter
           })
-          rendAlbum.rend = true
         })
-        .catch(err => console.error(err))
+        rendAlbum.rend = true
+      }).catch(err => console.error(err))
     })
+
     function scrollright () {
       if (!scrollbar.scrollleft) {
         scrollbar.value = 0
@@ -91,7 +104,7 @@ export default {
       scrollbar.value -= carousel.value.offsetWidth
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
-    provide('Albums', Albums)
+    provide('playlists', playlists)
     return { rendAlbum, scrollright, scrollleft, scrollbar, carousel }
   }
 }

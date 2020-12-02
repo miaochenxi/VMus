@@ -1,6 +1,6 @@
 <template>
   <div class="inline-block">
-    <img class="w-52 rounded-md" :src="Album.picurl" />
+    <img class="w-52 rounded-md" :src="Album.coverImgUrl" />
     <div class="mt-4">
       <a href="#">{{Album.name}}</a>
       <span>{{Album.description}}</span>
@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import { inject, onMounted, reactive } from 'vue'
+import { inject, onBeforeMount } from 'vue'
 export default {
   props: {
     item: {
@@ -17,17 +17,17 @@ export default {
     }
   },
   setup (props) {
-    const Albums = inject('Albums')
-    const Album = reactive({
+    const playlists = inject('playlists')
+    const Album = {
       id: 0,
       name: '',
-      picurl: '',
-      description: ''
-    })
-    onMounted(() => {
-      Album.name = Albums[props.item - 1].name
-      Album.id = Albums[props.item - 1].id
-      Album.picurl = Albums[props.item - 1].picurl
+      coverImgUrl: '',
+      copywriter: ''
+    }
+    onBeforeMount(() => {
+      Album.name = playlists[props.item - 1].name
+      Album.id = playlists[props.item - 1].id
+      Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
     })
     return { Album }
   }

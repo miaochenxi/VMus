@@ -38,11 +38,11 @@ const cats = [
 
 function getRandomTag () {
   const store = useStore()
-  let random = Math.floor(Math.random() * cats.length)
+  let random = cats[Math.floor(Math.random() * cats.length)]
   while (store.state.playerListTags.includes(random)) {
-    random = Math.floor(Math.random() * cats.length)
+    random = cats[Math.floor(Math.random() * cats.length)]
   }
-  store.commit('addTag',)
+  store.commit('addTag', random)
   return random
 }
 export { getRandomTag }
