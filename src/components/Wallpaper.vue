@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vmusic-carousel class="z-20 relative" :reqUrl="requestAPI"></vmusic-carousel>
+    <vmusic-carousel class="z-20 relative"></vmusic-carousel>
     <div class="cover absolute top-0 h-4/6 w-full z-10"></div>
     <div
       id="Wallpaper"
@@ -12,7 +12,6 @@
 
 <script>
 import Axios from 'axios'
-import { netease } from '../api/neteasemusic'
 import { wallpaperURL } from '../api/others'
 import { onBeforeMount, reactive } from 'vue'
 import VmusicCarousel from './VmusicCarousel.vue'
@@ -23,7 +22,6 @@ export default {
     const picurl = reactive({
       url: ''
     })
-    const requestAPI = netease.personalized
     onBeforeMount(() => {
       Axios.get(wallpaperURL,
         {
@@ -35,7 +33,7 @@ export default {
         .catch(err => console.error(err))
     })
 
-    return { picurl, requestAPI }
+    return { picurl }
   }
 }
 </script>

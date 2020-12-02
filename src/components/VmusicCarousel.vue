@@ -39,15 +39,7 @@ gsap.registerPlugin(ScrollToPlugin)
 export default {
   components: { AlbumItem },
   name: 'VmusicCarousel',
-  props:
-  {
-    reqUrl:
-    {
-      type: String,
-      required: false
-    }
-  },
-  setup (props) {
+  setup () {
     const playlists = []
     const rendAlbum = reactive({ rend: false })
     const carousel = ref(null)

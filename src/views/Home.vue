@@ -1,12 +1,11 @@
 <template>
   <div class="home">
     <wallpaper></wallpaper>
-    <vmusic-carousel class="relative" :reqUrl="carouselApi"></vmusic-carousel>
+    <vmusic-carousel class="relative"></vmusic-carousel>
   </div>
 </template>
 
 <script>
-import { netease } from '../api/neteasemusic'
 import VmusicCarousel from '../components/VmusicCarousel.vue'
 import Wallpaper from '../components/Wallpaper.vue'
 export default {
@@ -16,7 +15,6 @@ export default {
     VmusicCarousel
   },
   setup () {
-    const carouselApi = netease.newsong
     document.addEventListener('scroll', log)
     function log () {
       setTimeout(() => {
@@ -26,7 +24,7 @@ export default {
         }
       }, 500)
     }
-    return { carouselApi }
+    return { }
   }
 }
 </script>
