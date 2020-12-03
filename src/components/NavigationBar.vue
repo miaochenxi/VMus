@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 gap-4 items-center relative z-20" id="nav">
+  <div class="grid grid-cols-3 gap-4 items-center relative z-30" id="nav">
     <div class="inline-flex col-start-1">
       <img class="h-8 inline" alt="Vue logo" src="../assets/logo.png" />
       <span class="text-2xl">VMusic</span>

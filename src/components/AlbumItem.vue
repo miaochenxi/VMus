@@ -1,9 +1,9 @@
 <template>
   <div class="inline-block">
     <img class="w-52 rounded-md" :src="Album.coverImgUrl" />
-    <div class="mt-4">
+    <div class="text-block mt-4">
       <a href="#">{{Album.name}}</a>
-      <span>{{Album.description}}</span>
+      <span>{{Album.copywriter}}</span>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ export default {
       Album.name = playlists[props.item - 1].name
       Album.id = playlists[props.item - 1].id
       Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
+      Album.copywriter = playlists[props.item - 1].copywriter
     })
     return { Album }
   }
@@ -35,17 +36,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-span {
-  color: #ffffff80;
-}
-a {
+.text-block {
+  font-size: 1rem;
   width: 13rem;
-  height: 3rem;
-  display: block;
   overflow: hidden;
   white-space: normal;
-  line-height: 1.5rem;
   text-align: left;
-  font-size: 1rem;
+  a {
+    text-overflow: ellipsis;
+    line-height: 1.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  span {
+    color: #ffffff80;
+    margin-top: 0.3rem;
+    text-overflow: ellipsis;
+    line-height: 1.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 </style>

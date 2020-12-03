@@ -1,20 +1,20 @@
 <template>
-  <div class="w-11/12 m-auto py-10">
+  <div class="w-11/12 mx-auto py-10 mb-8">
     <div class="text-left pb-10">
-      <span class="block">欢庆永远不嫌早</span>
-      <h1 class="text-4xl font-bold">推荐的音乐视频</h1>
+      <span class="block"></span>
+      <h1 class="text-4xl font-bold">{{carouselInfo.category}}</h1>
     </div>
     <button
       v-if="scrollbar.scrollleft"
       @click="scrollleft"
       id="btn-left"
-      class="absolute -left-5 bottom-44 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+      class="absolute -left-5 top-52 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
     ></button>
     <div
       id="VmusicCarousel"
       v-if="rendAlbum.rend"
       ref="carousel"
-      class="carousel space-x-7 overflow-x-auto whitespace-nowrap"
+      class="carousel space-x-7 overflow-x-auto whitespace-nowrap flex items-start"
     >
       <album-item v-for="i in 10" :key="i" :item="i"></album-item>
     </div>
@@ -22,7 +22,7 @@
       v-if="scrollbar.scrollright"
       @click="scrollright"
       id="btn-right"
-      class="absolute -right-5 bottom-44 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+      class="absolute -right-5 top-52 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
     ></button>
   </div>
 </template>
@@ -50,15 +50,19 @@ export default {
     const playlists = []
     const rendAlbum = reactive({ rend: false })
     const carousel = ref(null)
+    const carouselInfo = reactive({
+      category: ''
+    })
+    carouselInfo.category = getRandomTag()
     const scrollbar = reactive({
       value: 0,
       scrollleft: false,
       scrollright: true
     })
 
-    Axios.get(netease.playerlist, {
+    Axios.get(netease.playlist, {
       params: {
-        cat: getRandomTag(),
+        cat: carouselInfo.category,
         limit: 10
       }
     }).then(res => {
@@ -100,7 +104,7 @@ export default {
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
     provide('playlists', playlists)
-    return { rendAlbum, scrollright, scrollleft, scrollbar, carousel }
+    return { rendAlbum, scrollright, scrollleft, scrollbar, carousel, carouselInfo }
   }
 }
 </script>

@@ -4,7 +4,7 @@
     <div class="cover absolute top-0 h-4/6 w-full z-10"></div>
     <div
       id="Wallpaper"
-      class="absolute top-0 h-4/6 w-full z-0"
+      class="absolute top-0 h-4/6 w-full"
       :style="{backgroundImage:'url('+picurl.url+')'}"
     ></div>
   </div>

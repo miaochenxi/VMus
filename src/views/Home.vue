@@ -1,11 +1,14 @@
 <template>
   <div class="home">
     <wallpaper></wallpaper>
-    <vmusic-carousel total="10" class="relative"></vmusic-carousel>
+    <div v-for="i in rows.value" :key="i">
+      <vmusic-carousel class="relative"></vmusic-carousel>
+    </div>
   </div>
 </template>
 
 <script>
+import { reactive } from 'vue'
 import VmusicCarousel from '../components/VmusicCarousel.vue'
 import Wallpaper from '../components/Wallpaper.vue'
 export default {
@@ -15,16 +18,22 @@ export default {
     VmusicCarousel
   },
   setup () {
+    const rows = reactive({
+      value: 1
+    })
     document.addEventListener('scroll', log)
     function log () {
       setTimeout(() => {
         if (document.documentElement.scrollHeight < document.documentElement.scrollTop + 350 + document.documentElement.clientHeight) {
           // 加载组件
+          if (rows.value < 10) {
+            rows.value++
+          }
           // console.log(this.documentElement.scrollHeight + ' ' + this.documentElement.scrollTop + ' ' + document.documentElement.clientHeight)
         }
       }, 500)
     }
-    return { }
+    return { rows }
   }
 }
 </script>
