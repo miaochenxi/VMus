@@ -12,8 +12,8 @@
     ></button>
     <div
       id="VmusicCarousel"
-      ref="carousel"
       v-if="rendAlbum.rend"
+      ref="carousel"
       class="carousel space-x-7 overflow-x-auto whitespace-nowrap"
     >
       <album-item v-for="i in 10" :key="i" :item="i"></album-item>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { onBeforeMount, provide, reactive, ref } from 'vue'
+import { provide, reactive, ref } from 'vue'
 import AlbumItem from './AlbumItem.vue'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
@@ -39,6 +39,13 @@ gsap.registerPlugin(ScrollToPlugin)
 export default {
   components: { AlbumItem },
   name: 'VmusicCarousel',
+  props: {
+    total: {
+      required: false,
+      type: String,
+      default: '10'
+    }
+  },
   setup () {
     const playlists = []
     const rendAlbum = reactive({ rend: false })
@@ -49,26 +56,22 @@ export default {
       scrollright: true
     })
 
-    onBeforeMount(() => {
-      Axios.defaults.withCredentials = true
-      Axios.get(netease.playerlist, {
-        params: {
-          cat: getRandomTag(),
-          limit: 10
-        }
-      }).then(res => {
-        console.log(res)
-        res.data.playlists.forEach(element => {
-          playlists.push({
-            name: element.name,
-            id: element.id,
-            coverImgUrl: element.coverImgUrl,
-            copywriter: element.copywriter
-          })
+    Axios.get(netease.playerlist, {
+      params: {
+        cat: getRandomTag(),
+        limit: 10
+      }
+    }).then(res => {
+      res.data.playlists.forEach(element => {
+        playlists.push({
+          name: element.name,
+          id: element.id,
+          coverImgUrl: element.coverImgUrl,
+          copywriter: element.copywriter
         })
         rendAlbum.rend = true
-      }).catch(err => console.error(err))
-    })
+      })
+    }).catch(err => console.log(err))
 
     function scrollright () {
       if (!scrollbar.scrollleft) {

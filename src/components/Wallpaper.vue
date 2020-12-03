@@ -13,7 +13,7 @@
 <script>
 import Axios from 'axios'
 import { wallpaperURL } from '../api/others'
-import { onBeforeMount, reactive } from 'vue'
+import { reactive } from 'vue'
 import VmusicCarousel from './VmusicCarousel.vue'
 export default {
   components: { VmusicCarousel },
@@ -22,16 +22,15 @@ export default {
     const picurl = reactive({
       url: ''
     })
-    onBeforeMount(() => {
-      Axios.get(wallpaperURL,
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
-        })
-        .then(res => {
-          picurl.url = res.data.data
-        })
-        .catch(err => console.error(err))
-    })
+    Axios.defaults.withCredentials = false
+    Axios.get(wallpaperURL,
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+      })
+      .then(res => {
+        picurl.url = res.data.data
+      })
+      .catch(err => console.log(err))
 
     return { picurl }
   }

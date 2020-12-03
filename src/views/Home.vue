@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <wallpaper></wallpaper>
-    <vmusic-carousel class="relative"></vmusic-carousel>
+    <vmusic-carousel total="10" class="relative"></vmusic-carousel>
   </div>
 </template>
 
