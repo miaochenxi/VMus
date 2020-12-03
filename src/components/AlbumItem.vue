@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import { inject, onMounted, reactive } from 'vue'
+import { inject, onBeforeMount } from 'vue'
 export default {
   props: {
     item: {
@@ -18,13 +18,13 @@ export default {
   },
   setup (props) {
     const playlists = inject('playlists')
-    const Album = reactive({
+    const Album = {
       id: 0,
       name: '',
       coverImgUrl: '',
       copywriter: ''
-    })
-    onMounted(() => {
+    }
+    onBeforeMount(() => {
       Album.name = playlists[props.item - 1].name
       Album.id = playlists[props.item - 1].id
       Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
