@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { onMounted, onUnmounted, reactive } from 'vue'
 import VmusicCarousel from '../components/VmusicCarousel.vue'
 import Wallpaper from '../components/Wallpaper.vue'
 export default {
@@ -21,7 +21,14 @@ export default {
     const rows = reactive({
       value: 1
     })
-    document.addEventListener('scroll', log)
+    onMounted(() => {
+      console.log('Mounted')
+      document.addEventListener('scroll', log)
+    })
+    onUnmounted(() => {
+      console.log('onUnmounted')
+      document.removeEventListener('scroll', log)
+    })
     function log () {
       setTimeout(() => {
         if (document.documentElement.scrollHeight < document.documentElement.scrollTop + 350 + document.documentElement.clientHeight) {
