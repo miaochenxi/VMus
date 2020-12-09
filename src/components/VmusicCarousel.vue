@@ -1,5 +1,5 @@
 <template>
-  <div class="w-11/12 mx-auto py-10 mb-8">
+  <div class="w-11/12 mx-auto py-10 mb-8" v-if="rendAlbum.rend">
     <div class="text-left pb-10">
       <span class="block"></span>
       <h1 class="text-4xl font-bold">{{carouselInfo.category}}</h1>
@@ -12,7 +12,6 @@
     ></button>
     <div
       id="VmusicCarousel"
-      v-if="rendAlbum.rend"
       ref="carousel"
       class="carousel space-x-7 overflow-x-auto whitespace-nowrap flex items-start"
     >
@@ -36,12 +35,12 @@ import Axios from 'axios'
 import { netease } from '../api/neteasemusic'
 import { getRandomTag } from '../common/Category'
 gsap.registerPlugin(ScrollToPlugin)
+
 export default {
   components: { AlbumItem },
   name: 'VmusicCarousel',
   props: {
     total: {
-      required: false,
       type: String,
       default: '10'
     }

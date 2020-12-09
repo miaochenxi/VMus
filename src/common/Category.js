@@ -42,6 +42,7 @@ const cats = [
 function getRandomTag () {
   const store = useStore()
   let random = cats[Math.floor(Math.random() * cats.length)]
+  if (store.state.playerListTags.length === 12) return null
   while (store.state.playerListTags.includes(random)) {
     random = cats[Math.floor(Math.random() * cats.length)]
   }

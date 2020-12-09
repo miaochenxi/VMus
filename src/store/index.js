@@ -11,6 +11,9 @@ export default createStore({
     },
     addTag (state, tag) {
       state.playerListTags.push(tag)
+    },
+    clearAllTags (state) {
+      state.playerListTags = []
     }
   },
   actions: {
