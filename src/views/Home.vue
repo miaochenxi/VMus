@@ -31,14 +31,14 @@ export default {
     })
     function log () {
       setTimeout(() => {
-        if (document.documentElement.scrollHeight < document.documentElement.scrollTop + 350 + document.documentElement.clientHeight) {
+        if (document.documentElement.scrollHeight < document.documentElement.scrollTop + 450 + document.documentElement.clientHeight) {
           // 加载组件
           if (rows.value < 10) {
             rows.value++
           }
           // console.log(this.documentElement.scrollHeight + ' ' + this.documentElement.scrollTop + ' ' + document.documentElement.clientHeight)
         }
-      }, 500)
+      }, 1000)
     }
     return { rows }
   }

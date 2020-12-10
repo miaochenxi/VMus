@@ -1,6 +1,6 @@
 <template>
   <div class="inline-block">
-    <img class="w-52 rounded-md" :src="Album.coverImgUrl" />
+    <img class="w-52 rounded-md" :class="classObj" :src="Album.coverImgUrl" />
     <div class="text-block mt-4">
       <a href="#">{{Album.name}}</a>
       <span>{{Album.copywriter}}</span>
@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import { inject, onBeforeMount } from 'vue'
+import { inject, onBeforeMount, reactive } from 'vue'
 export default {
   props: {
     item: {
@@ -24,13 +24,16 @@ export default {
       coverImgUrl: '',
       copywriter: ''
     }
+    const classObj = reactive({
+      'rounded-md': true
+    })
     onBeforeMount(() => {
       Album.name = playlists[props.item - 1].name
       Album.id = playlists[props.item - 1].id
       Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
       Album.copywriter = playlists[props.item - 1].copywriter
     })
-    return { Album }
+    return { Album, classObj }
   }
 }
 </script>

@@ -102,6 +102,7 @@ export default {
       scrollbar.value -= carousel.value.offsetWidth
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
+
     provide('playlists', playlists)
     return { rendAlbum, scrollright, scrollleft, scrollbar, carousel, carouselInfo }
   }
