@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     isLogged: false,
-    playerListTags: []
+    playerListTags: [],
+    carousels: []
   },
   mutations: {
     updateLogStatus (state, status) {
@@ -14,6 +15,12 @@ export default createStore({
     },
     clearAllTags (state) {
       state.playerListTags = []
+    },
+    pushCarousel (state, carousel) {
+      state.carousels.push(carousel)
+    },
+    clearCarousels (state) {
+      state.carousels = []
     }
   },
   actions: {

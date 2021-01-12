@@ -1,10 +1,10 @@
 <template>
   <div>
-    <vmusic-carousel class="z-20 relative"></vmusic-carousel>
-    <div class="cover absolute top-0 h-4/6 w-full z-10"></div>
+    <vmusic-carousel type="RecPlaylist" class="z-20 relative"></vmusic-carousel>
+    <div class="cover absolute top-0 h-5/6 w-full z-10"></div>
     <div
       id="Wallpaper"
-      class="absolute top-0 h-4/6 w-full"
+      class="absolute top-0 h-5/6 w-full"
       :style="{backgroundImage:'url('+picurl.url+')'}"
     ></div>
   </div>

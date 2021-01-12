@@ -2,13 +2,14 @@
   <div class="home">
     <wallpaper></wallpaper>
     <div v-for="i in rows.value" :key="i">
-      <vmusic-carousel class="relative"></vmusic-carousel>
+      <vmusic-carousel :type="carousels[i-1].type" class="relative"></vmusic-carousel>
     </div>
   </div>
 </template>
 
 <script>
 import { onMounted, onUnmounted, reactive } from 'vue'
+import { buildCarousels } from '../common/Carousel'
 import VmusicCarousel from '../components/VmusicCarousel.vue'
 import Wallpaper from '../components/Wallpaper.vue'
 export default {
@@ -21,6 +22,7 @@ export default {
     const rows = reactive({
       value: 1
     })
+    const carousels = buildCarousels()
     onMounted(() => {
       console.log('Mounted')
       document.addEventListener('scroll', log)
@@ -33,14 +35,14 @@ export default {
       setTimeout(() => {
         if (document.documentElement.scrollHeight < document.documentElement.scrollTop + 450 + document.documentElement.clientHeight) {
           // 加载组件
-          if (rows.value < 10) {
+          if (rows.value < 9) {
             rows.value++
           }
           // console.log(this.documentElement.scrollHeight + ' ' + this.documentElement.scrollTop + ' ' + document.documentElement.clientHeight)
         }
-      }, 1000)
+      }, 500)
     }
-    return { rows }
+    return { rows, carousels }
   }
 }
 </script>

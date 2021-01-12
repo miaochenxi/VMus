@@ -1,5 +1,10 @@
 <template>
-  <div class="w-11/12 mx-auto py-10 mb-8" v-if="rendAlbum.rend">
+  <div class="w-11/12 mx-auto py-16 mb-8" v-if="rendAlbum.rend">
+    <img
+      v-if="type==='SimiArtists'"
+      class="rounded-full w-9 h-9"
+      :src="SimiArtists.obj.details.avatarUrl"
+    />
     <div class="text-left pb-10">
       <span class="block"></span>
       <h1 class="text-4xl font-bold">{{carouselInfo.category}}</h1>
@@ -8,7 +13,7 @@
       v-if="scrollbar.scrollleft"
       @click="scrollleft"
       id="btn-left"
-      class="absolute -left-5 top-52 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+      class="absolute -left-5 top-60 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
     ></button>
     <div
       id="VmusicCarousel"
@@ -21,7 +26,7 @@
       v-if="scrollbar.scrollright"
       @click="scrollright"
       id="btn-right"
-      class="absolute -right-5 top-52 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
+      class="absolute -right-5 top-60 w-10 h-10 shadow-2xl focus:outline-none rounded-full bg-white"
     ></button>
   </div>
 </template>
@@ -34,6 +39,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import Axios from 'axios'
 import { netease } from '../api/neteasemusic'
 import { getRandomTag } from '../common/Category'
+import { getSimiArtists, getSubArtistId } from '../common/Carousel'
 gsap.registerPlugin(ScrollToPlugin)
 
 export default {
@@ -43,11 +49,15 @@ export default {
     total: {
       type: String,
       default: '10'
+    },
+    type: {
+      required: true
     }
   },
-  setup () {
+  setup (props) {
     const playlists = []
     const rendAlbum = reactive({ rend: false })
+    const SimiArtists = reactive({ obj: null, Artist: false })// 终究还是要用reactive
     const carousel = ref(null)
     const carouselInfo = reactive({
       category: ''
@@ -58,24 +68,32 @@ export default {
       scrollleft: false,
       scrollright: true
     })
-
-    Axios.get(netease.playlist, {
-      params: {
-        cat: carouselInfo.category,
-        limit: 10
-      }
-    }).then(res => {
-      res.data.playlists.forEach(element => {
-        playlists.push({
-          name: element.name,
-          id: element.id,
-          coverImgUrl: element.coverImgUrl,
-          copywriter: element.copywriter
+    if (props.type === 'RecPlaylist') {
+      Axios.get(netease.playlist, {
+        params: {
+          cat: carouselInfo.category,
+          limit: 10
+        }
+      }).then(res => {
+        res.data.playlists.forEach(element => {
+          playlists.push({
+            name: element.name,
+            id: element.id,
+            coverImgUrl: element.coverImgUrl,
+            copywriter: element.copywriter
+          })
+          rendAlbum.rend = true
         })
+      }).catch(err => console.log(err))
+    } else {
+      const fun = async () => {
+        const id = await getSubArtistId()
+        SimiArtists.obj = await getSimiArtists(id)
+        console.log(SimiArtists.obj)
         rendAlbum.rend = true
-      })
-    }).catch(err => console.log(err))
-
+      }
+      fun()
+    }
     function scrollright () {
       if (!scrollbar.scrollleft) {
         scrollbar.value = 0
@@ -102,9 +120,9 @@ export default {
       scrollbar.value -= carousel.value.offsetWidth
       gsap.to(carousel.value, { duration: 0.7, scrollTo: { x: scrollbar.value }, ease: 'power2.inOut' })
     }
-
+    provide('SimiArtists', SimiArtists)
     provide('playlists', playlists)
-    return { rendAlbum, scrollright, scrollleft, scrollbar, carousel, carouselInfo }
+    return { rendAlbum, scrollright, scrollleft, scrollbar, carousel, carouselInfo, SimiArtists }
   }
 }
 </script>

@@ -14,6 +14,9 @@ export default {
     item: {
       type: Number,
       required: true
+    },
+    type: {
+      required: false
     }
   },
   setup (props) {
@@ -27,12 +30,19 @@ export default {
     const classObj = reactive({
       'rounded-md': true
     })
-    onBeforeMount(() => {
-      Album.name = playlists[props.item - 1].name
-      Album.id = playlists[props.item - 1].id
-      Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
-      Album.copywriter = playlists[props.item - 1].copywriter
-    })
+    const SimiArtists = inject('SimiArtists')
+    if (!SimiArtists.Artist) {
+      onBeforeMount(() => {
+        Album.name = playlists[props.item - 1].name
+        Album.id = playlists[props.item - 1].id
+        Album.coverImgUrl = playlists[props.item - 1].coverImgUrl
+        Album.copywriter = playlists[props.item - 1].copywriter
+      })
+    } else {
+      onBeforeMount(() => { // 此处写10个Album的分配歌手和歌单逻辑。新思路：在vmcarousel中构建好数组，然后shuffle，在这里从其中依次取一个个元素用于显示
+        Album.coverImgUrl = SimiArtists.obj.artists[props.item - 1].picUrl
+      })
+    }
     return { Album, classObj }
   }
 }
